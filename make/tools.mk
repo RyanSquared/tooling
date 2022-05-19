@@ -54,3 +54,19 @@ tools/terraform-ignition:
 tools/terraform-aws:
 	$(eval CMD="go build $(GOFLAGS) -o $(PWD)/tools/terraform-aws")
 	$(call build-go,terraform-aws,"$(TERRAFORM_AWS_URL)","$(TERRAFORM_AWS_REF)","$(CMD)")
+
+tools/terraform-digitalocean:
+	$(eval CMD="go build $(GOFLAGS) -o $(PWD)/tools/terraform-digitalocean")
+	$(call build-go,terraform-digitalocean,"$(TERRAFORM_DIGITALOCEAN_URL)","$(TERRAFORM_DIGITALOCEAN_REF)","$(CMD)")
+
+tools/terraform-local:
+	$(eval CMD="go build $(GOFLAGS) -o $(PWD)/tools/terraform-local")
+	$(call build-go,terraform-local,"$(TERRAFORM_LOCAL_URL)","$(TERRAFORM_LOCAL_REF)","$(CMD)")
+
+tools/terraform-null:
+	$(eval CMD="go build $(GOFLAGS) -o $(PWD)/tools/terraform-null")
+	$(call build-go,terraform-null,"$(TERRAFORM_NULL_URL)","$(TERRAFORM_NULL_REF)","$(CMD)")
+
+tools/talosctl:
+	$(eval CMD="go build $(GOFLAGS) -o $(PWD)/tools/talosctl $(TALOSCTL_PKG)")
+	$(call build-go,talosctl,"$(TALOSCTL_URL)","$(TALOSCTL_REF)","$(CMD)")
