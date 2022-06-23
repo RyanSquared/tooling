@@ -70,3 +70,7 @@ tools/terraform-null:
 tools/talosctl:
 	$(eval CMD="go build $(GOFLAGS) -o $(PWD)/tools/talosctl $(TALOSCTL_PKG)")
 	$(call build-go,talosctl,"$(TALOSCTL_URL)","$(TALOSCTL_REF)","$(CMD)")
+
+tools/yq:
+	$(eval CMD="go build $(GOFLAGS) -o $(PWD)/tools/yq")
+	$(call build-go,yq,"$(YQ_URL)","$(YQ_REF)","$(CMD)")
