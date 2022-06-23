@@ -11,3 +11,7 @@ clean: clean-tools clean-build
 clean-build:
 	# yes, -f is necessary, because of git meta files
 	rm -rf build
+
+.PHONY: docker
+docker:
+	docker buildx build -o tools .
