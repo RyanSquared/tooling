@@ -1,18 +1,19 @@
 # 8 processes is probably enough to build all processes on a machine with 8 GB
 # of RAM without running out of RAM
-GOFLAGS=-p 8 -v -trimpath -ldflags=-w
+GOFLAGS ?= -p 8 -v -trimpath -ldflags=-w
+GOARCH ?= $(shell go version | cut -d' ' -f4 | tr / _)
 
 # Arguments: 1: binary, 2: pkg?, 3: output?, 4: build directory?
 define build-go
-	sh -c "cd build/$(1)$(if $(4),/$(4),) && go build $(GOFLAGS) -o $(PWD)/tools/$(if $(3),$(3),$(1))$(if $(2), $(2),)"
+	cd build/$(1)$(if $(4),/$(4),) && go build $(GOFLAGS) -o $(PWD)/tools/$(if $(3),$(3),$(1))$(if $(2), $(2),)
 endef
 
 # Arguments: 1: binary, 2: repository, 3: ref
 define clone-repo
 	mkdir -p build
-	sh -c "git clone $(2) build/$(1) || test -d build/$(1) && git -C build/$(1) fetch"
-	git -C build/$(1) checkout $(3)
-	sh -c "test `git -C build/$(1) rev-parse HEAD` = $(3)"
+	git clone $(2) build/$(1) 2>/dev/null || test -d build/$(1) && git -C build/$(1) fetch >/dev/null
+	git -C build/$(1) checkout $(3) 2>/dev/null
+	test `git -C build/$(1) rev-parse HEAD` = $(3)
 endef
 
 build: build/kubectl build/k9s build/sops build/ksops
@@ -97,6 +98,12 @@ build/terraform-null: config/tools.env
 
 tools/terraform-null: build/terraform-null
 	$(call build-go,terraform-null)
+
+build/terraform-random: config/tools.env
+	$(call clone-repo,terraform-random,$(TERRAFORM_RANDOM_URL),$(TERRAFORM_RANDOM_REF))
+
+tools/terraform-random: build/terraform-random
+	$(call build-go,terraform-random)
 
 build/talosctl: config/tools.env
 	$(call clone-repo,talosctl,$(TALOSCTL_URL),$(TALOSCTL_REF))
