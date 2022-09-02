@@ -24,7 +24,7 @@ build: build/terraform-null build/talosctl build/yq
 tools: tools/kubectl tools/k9s tools/sops tools/viaduct.ai/v1/ksops/ksops
 tools: tools/kustomize tools/terraform tools/terraform-ignition
 tools: tools/terraform-aws tools/terraform-digitalocean tools/terraform-local
-tools: tools/terraform-null tools/talosctl tools/yq
+tools: tools/terraform-null tools/terraform-random tools/talosctl tools/yq
 
 .PHONY: clean-tools
 clean-tools:

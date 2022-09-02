@@ -43,3 +43,5 @@ install: tools
 	install $(BINDIR)/terraform-local $(BINDIR)/$(TERRAFORM_LOCAL_BINARY)
 	mkdir -p $(BINDIR)/$(shell dirname $(TERRAFORM_NULL_BINARY))
 	install $(BINDIR)/terraform-null $(BINDIR)/$(TERRAFORM_NULL_BINARY)
+	mkdir -p $(BINDIR)/$(shell dirname $(TERRAFORM_RANDOM_BINARY))
+	install $(BINDIR)/terraform-random $(BINDIR)/$(TERRAFORM_RANDOM_BINARY)
