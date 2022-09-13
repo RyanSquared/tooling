@@ -1,0 +1,20 @@
+on: [push]
+
+name: Docker Build and Push
+
+jobs:
+  docker-build:
+    name: Docker Build and Push
+    runs-on: self-hosted
+    env:
+      USERNAME: RyanSquared
+      REPOSITORY: ghcr.io/ryansquared/tooling
+    steps:
+    - uses: actions/checkout@v2
+    - run: git verify-commit HEAD
+    - run: sudo apt-get install -y docker.io
+    - run: sudo docker build -t $REPOSITORY .
+    - run: echo $GITHUB_TOKEN | sudo docker login ghcr.io -u $USERNAME --password-stdin
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: sudo docker push $REPOSITORY:latest
