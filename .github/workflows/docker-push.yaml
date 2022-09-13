@@ -13,7 +13,7 @@ jobs:
     - uses: actions/checkout@v2
     - run: git verify-commit HEAD
     - run: sudo apt-get install -y docker.io
-    - run: sudo docker build -t $REPOSITORY .
+    - run: sudo DOCKER_BUILDKIT=1 docker build -t $REPOSITORY .
     - run: echo $GITHUB_TOKEN | sudo docker login ghcr.io -u $USERNAME --password-stdin
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
