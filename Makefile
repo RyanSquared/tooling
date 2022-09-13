@@ -1,6 +1,7 @@
 BINDIR ?= $(HOME)/bin
 KUSTOMIZE_PLUGIN_HOME ?= $(BINDIR)
 TF_PLUGIN_CACHE_DIR ?= $(BINDIR)
+DOCKER_IMAGE_NAME ?= tooling
 
 .PHONY: default
 default: tools
@@ -18,7 +19,7 @@ clean-build:
 
 .PHONY: docker
 docker:
-	docker buildx build -o tools .
+	DOCKER_BUILDKIT=1 docker build -t $(DOCKER_IMAGE_NAME) --progress=plain .
 
 .PHONY: echo
 echo:
