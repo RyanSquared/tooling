@@ -7,8 +7,7 @@ ADD make /build/make
 ADD config /build/config
 WORKDIR /build
 
-RUN make build
-RUN make tools
+RUN --mount=type=cache,target=/build/build --mount=type=cache,target=/go make build tools
 
 FROM scratch
 
