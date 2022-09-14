@@ -16,3 +16,8 @@ in the environment file. Terraform also typically pulls the "latest" version of
 a plugin when running `terraform init` rather than a cached version, so
 if the version in the Terraform repository is further than installed locally,
 that one will be preferred.
+
+A really hacky way to download the tools would be to extract from the ghcr.io
+repository using `docker save ghcr.io/ryansquared/tooling | tar xv`, find the
+exported layer, and extract that using `tar xvf`. Useful for systems that don't
+have the capabilities of building everything from source.
