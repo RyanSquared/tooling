@@ -19,12 +19,18 @@ endef
 build: build/kubectl build/k9s build/sops build/ksops
 build: build/kustomize build/terraform build/terraform-ignition
 build: build/terraform-aws build/terraform-digitalocean build/terraform-local
-build: build/terraform-null build/talosctl build/yq
+build: build/terraform-null build/terraform-random build/tflint build/talosctl
+build: build/yq
+
+build: build/tflint-ruleset-aws
 
 tools: tools/kubectl tools/k9s tools/sops tools/viaduct.ai/v1/ksops/ksops
 tools: tools/kustomize tools/terraform tools/terraform-ignition
 tools: tools/terraform-aws tools/terraform-digitalocean tools/terraform-local
-tools: tools/terraform-null tools/terraform-random tools/talosctl tools/yq
+tools: tools/terraform-null tools/terraform-random build/tflint tools/talosctl
+tools: tools/yq
+
+tools: tools/tflint-ruleset-aws
 
 .PHONY: clean-tools
 clean-tools:
@@ -110,6 +116,18 @@ build/talosctl: config/tools.env
 
 tools/talosctl: build/talosctl
 	$(call build-go,talosctl,$(TALOSCTL_PKG))
+
+build/tflint: config/tools.env
+	$(call clone-repo,tflint,$(TFLINT_URL),$(TFLINT_REF))
+
+tools/tflint: build/tflint
+	$(call build-go,tflint)
+
+build/tflint-ruleset-aws: config/tools.env
+	$(call clone-repo,tflint-ruleset-aws,$(TFLINT_RULESET_AWS_URL),$(TFLINT_RULESET_AWS_REF))
+
+tools/tflint-ruleset-aws: build/tflint-ruleset-aws
+	$(call build-go,tflint-ruleset-aws)
 
 build/yq: config/tools.env
 	$(call clone-repo,yq,$(YQ_URL),$(YQ_REF))

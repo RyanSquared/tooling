@@ -1,6 +1,7 @@
 BINDIR ?= $(HOME)/bin
 KUSTOMIZE_PLUGIN_HOME ?= $(BINDIR)
 TF_PLUGIN_CACHE_DIR ?= $(BINDIR)
+TFLINT_PLUGIN_CACHE_DIR ?= $(HOME)/.tflint.d/plugins
 DOCKER_IMAGE_NAME ?= tooling
 
 .PHONY: default
@@ -46,3 +47,5 @@ install: tools
 	install $(BINDIR)/terraform-null $(BINDIR)/$(TERRAFORM_NULL_BINARY)
 	mkdir -p $(BINDIR)/$(shell dirname $(TERRAFORM_RANDOM_BINARY))
 	install $(BINDIR)/terraform-random $(BINDIR)/$(TERRAFORM_RANDOM_BINARY)
+	mkdir -p $(TFLINT_PLUGIN_CACHE_DIR)
+	install $(BINDIR)/tflint-ruleset-* $(TFLINT_PLUGIN_CACHE_DIR)
