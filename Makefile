@@ -7,8 +7,10 @@ DOCKER_IMAGE_NAME ?= tooling
 .PHONY: default
 default: tools
 
-include $(PWD)/make/tools.mk
 include $(PWD)/config/tools.env
+include $(PWD)/make/tools.mk
+include $(PWD)/make/tools-terraform.mk
+include $(PWD)/make/tools-tflint.mk
 
 .PHONY: clean
 clean: clean-tools clean-build

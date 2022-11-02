@@ -17,20 +17,10 @@ define clone-repo
 endef
 
 build: build/kubectl build/k9s build/sops build/ksops
-build: build/kustomize build/terraform build/terraform-ignition
-build: build/terraform-aws build/terraform-digitalocean build/terraform-local
-build: build/terraform-null build/terraform-random build/tflint build/talosctl
-build: build/yq
-
-build: build/tflint-ruleset-aws
+build: build/kustomize build/terraform build/tflint build/talosctl build/yq
 
 tools: tools/kubectl tools/k9s tools/sops tools/viaduct.ai/v1/ksops/ksops
-tools: tools/kustomize tools/terraform tools/terraform-ignition
-tools: tools/terraform-aws tools/terraform-digitalocean tools/terraform-local
-tools: tools/terraform-null tools/terraform-random build/tflint tools/talosctl
-tools: tools/yq
-
-tools: tools/tflint-ruleset-aws
+tools: tools/kustomize tools/terraform build/tflint tools/talosctl tools/yq
 
 .PHONY: clean-tools
 clean-tools:
@@ -75,42 +65,6 @@ build/terraform: config/tools.env
 tools/terraform: build/terraform
 	$(call build-go,terraform)
 
-build/terraform-ignition: config/tools.env
-	$(call clone-repo,terraform-ignition,$(TERRAFORM_IGNITION_URL),$(TERRAFORM_IGNITION_REF))
-
-tools/terraform-ignition: build/terraform-ignition
-	$(call build-go,terraform-ignition)
-
-build/terraform-aws: config/tools.env
-	$(call clone-repo,terraform-aws,$(TERRAFORM_AWS_URL),$(TERRAFORM_AWS_REF))
-
-tools/terraform-aws: build/terraform-aws
-	$(call build-go,terraform-aws)
-
-build/terraform-digitalocean: config/tools.env
-	$(call clone-repo,terraform-digitalocean,$(TERRAFORM_DIGITALOCEAN_URL),$(TERRAFORM_DIGITALOCEAN_REF))
-
-tools/terraform-digitalocean: build/terraform-digitalocean
-	$(call build-go,terraform-digitalocean)
-
-build/terraform-local: config/tools.env
-	$(call clone-repo,terraform-local,$(TERRAFORM_LOCAL_URL),$(TERRAFORM_LOCAL_REF))
-
-tools/terraform-local: build/terraform-local
-	$(call build-go,terraform-local)
-
-build/terraform-null: config/tools.env
-	$(call clone-repo,terraform-null,$(TERRAFORM_NULL_URL),$(TERRAFORM_NULL_REF))
-
-tools/terraform-null: build/terraform-null
-	$(call build-go,terraform-null)
-
-build/terraform-random: config/tools.env
-	$(call clone-repo,terraform-random,$(TERRAFORM_RANDOM_URL),$(TERRAFORM_RANDOM_REF))
-
-tools/terraform-random: build/terraform-random
-	$(call build-go,terraform-random)
-
 build/talosctl: config/tools.env
 	$(call clone-repo,talosctl,$(TALOSCTL_URL),$(TALOSCTL_REF))
 
@@ -122,12 +76,6 @@ build/tflint: config/tools.env
 
 tools/tflint: build/tflint
 	$(call build-go,tflint)
-
-build/tflint-ruleset-aws: config/tools.env
-	$(call clone-repo,tflint-ruleset-aws,$(TFLINT_RULESET_AWS_URL),$(TFLINT_RULESET_AWS_REF))
-
-tools/tflint-ruleset-aws: build/tflint-ruleset-aws
-	$(call build-go,tflint-ruleset-aws)
 
 build/yq: config/tools.env
 	$(call clone-repo,yq,$(YQ_URL),$(YQ_REF))
