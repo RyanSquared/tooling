@@ -3,6 +3,7 @@ KUSTOMIZE_PLUGIN_HOME ?= $(BINDIR)
 TF_PLUGIN_CACHE_DIR ?= $(BINDIR)
 TFLINT_PLUGIN_CACHE_DIR ?= $(HOME)/.tflint.d/plugins
 DOCKER_IMAGE_NAME ?= tooling
+TOOLS ?= tools
 
 .PHONY: default
 default: tools
@@ -22,7 +23,7 @@ clean-build:
 
 .PHONY: docker
 docker:
-	DOCKER_BUILDKIT=1 docker build -t $(DOCKER_IMAGE_NAME) --progress=plain .
+	DOCKER_BUILDKIT=1 docker build -t $(DOCKER_IMAGE_NAME) --progress=plain --build-arg TOOLS="$(TOOLS)" .
 
 .PHONY: echo
 echo:
@@ -31,10 +32,11 @@ echo:
 	@echo "TF_PLUGIN_CACHE_DIR?=$(TF_PLUGIN_CACHE_DIR)"
 	@echo "GOFLAGS?=$(GOFLAGS)"
 	@echo "GOARCH?=$(GOARCH)"
+	@echo "TOOLS?=$(TOOLS)"
 	@cat config/tools.env | grep '^export' | cut -d' ' -f2
 
 .PHONY: install
-install: tools
+install:
 	rsync -r tools/ $(BINDIR)
 	rsync -r tools/ $(KUSTOMIZE_PLUGIN_HOME)
 	mkdir -p $(BINDIR)/$(shell dirname $(TERRAFORM_AWS_BINARY))
