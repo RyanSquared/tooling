@@ -23,7 +23,7 @@ build: build/terraform build/talosctl build/helm build/tflint build/yq
 
 tools: tools/kubectl tools/k9s tools/sops tools/kustomize
 tools: tools/terraform tools/talosctl tools/helm tools/tflint tools/yq
-tools: build/viaduct.ai/v1/ksops/ksops
+tools: tools/viaduct.ai/v1/ksops/ksops
 
 .PHONY: clean-tools
 clean-tools:
