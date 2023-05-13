@@ -18,11 +18,12 @@ define clone-repo
 	test `git -C build/$(1) rev-parse HEAD` = $(3)
 endef
 
-build: build/kubectl build/k9s build/sops build/ksops
-build: build/kustomize build/terraform build/tflint build/talosctl build/yq
+build: build/kubectl build/k9s build/sops build/ksops build/kustomize
+build: build/terraform build/talosctl build/helm build/tflint build/yq
 
-tools: tools/kubectl tools/k9s tools/sops tools/viaduct.ai/v1/ksops/ksops
-tools: tools/kustomize tools/terraform build/tflint tools/talosctl tools/yq
+tools: tools/kubectl tools/k9s tools/sops tools/kustomize
+tools: tools/terraform tools/talosctl tools/helm tools/tflint tools/yq
+tools: build/viaduct.ai/v1/ksops/ksops
 
 .PHONY: clean-tools
 clean-tools:
@@ -72,6 +73,12 @@ build/talosctl: config/tools.env
 
 tools/talosctl: build/talosctl
 	$(call build-go,talosctl,$(TALOSCTL_PKG))
+
+build/helm: config/tools.env
+	$(call clone-repo,helm,$(HELM_URL),$(HELM_REF))
+
+tools/helm: build/helm
+	$(call build-go,helm,$(HELM_PKG))
 
 build/tflint: config/tools.env
 	$(call clone-repo,tflint,$(TFLINT_URL),$(TFLINT_REF))
