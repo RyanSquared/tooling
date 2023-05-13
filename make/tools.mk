@@ -10,9 +10,11 @@ endef
 
 # Arguments: 1: binary, 2: repository, 3: ref
 define clone-repo
-	mkdir -p build
-	git clone $(2) build/$(1) 2>/dev/null || test -d build/$(1) && git -C build/$(1) fetch >/dev/null
-	git -C build/$(1) checkout $(3) 2>/dev/null
+	mkdir -p build/$(1)
+	git -C build/$(1) init
+	git -C build/$(1) remote add origin $(2) || true
+	git -C build/$(1) fetch origin $(3)
+	git -C build/$(1) -c advice.detachedHead=false checkout $(3)
 	test `git -C build/$(1) rev-parse HEAD` = $(3)
 endef
 
@@ -42,7 +44,7 @@ build/sops: config/tools.env
 	$(call clone-repo,sops,$(SOPS_URL),$(SOPS_REF))
 
 tools/sops: build/sops
-	$(call build-go,sops,go.mozilla.org/sops/v3/cmd/sops)
+	$(call build-go,sops,$(SOPS_PKG))
 
 build/ksops: config/tools.env
 	$(call clone-repo,ksops,$(KSOPS_URL),$(KSOPS_REF))
