@@ -19,10 +19,10 @@ define clone-repo
 endef
 
 build: build/kubectl build/k9s build/sops build/ksops build/kustomize
-build: build/terraform build/talosctl build/helm build/tflint build/yq
+build: build/tofu build/talosctl build/helm build/tflint build/yq
 
 tools: tools/kubectl tools/k9s tools/sops tools/kustomize
-tools: tools/terraform tools/talosctl tools/helm tools/tflint tools/yq
+tools: tools/tofu tools/talosctl tools/helm tools/tflint tools/yq
 tools: tools/viaduct.ai/v1/ksops/ksops
 
 .PHONY: clean-tools
@@ -62,11 +62,11 @@ build/kustomize: config/tools.env
 tools/kustomize: build/kustomize
 	$(call build-go,kustomize,,,kustomize)
 
-build/terraform: config/tools.env
-	$(call clone-repo,terraform,$(TERRAFORM_URL),$(TERRAFORM_REF))
+build/tofu: config/tools.env
+	$(call clone-repo,tofu,$(TOFU_URL),$(TOFU_REF))
 
-tools/terraform: build/terraform
-	$(call build-go,terraform)
+tools/tofu: build/tofu
+	$(call build-go,tofu)
 
 build/talosctl: config/tools.env
 	$(call clone-repo,talosctl,$(TALOSCTL_URL),$(TALOSCTL_REF))
