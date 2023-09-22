@@ -36,6 +36,7 @@ echo:
 	@echo "TOOLS?=$(TOOLS)"
 	@echo "DOCKER_IMAGE_NAME?=$(DOCKER_IMAGE_NAME)"
 	@echo "DOCKER_TARGET?=$(DOCKER_TARGET)"
+	@echo "TOOLS?=$(TOOLS)"
 	@cat config/tools.env | grep '^export' | cut -d' ' -f2
 	@cat config/tools.env | grep '^export' | cut -d' ' -f2
 

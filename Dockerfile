@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1.3
-ARG TOOLS=TOOLS
+FROM golang:1.20.8-bullseye AS builder
 
-FROM golang:1.20 AS builder
+ARG TOOLS=tools
 
 RUN mkdir /build
 ADD Makefile /build
